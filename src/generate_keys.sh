@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# modified from https://github.com/ethereum/consensus-deployment-ansible/blob/master/example-testnet/generate_keys.sh
 
 if [ -z "$VALIDATORS_MNEMONIC_0" ]; then
   echo "missing mnemonic 0"

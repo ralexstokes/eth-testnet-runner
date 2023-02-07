@@ -1,6 +1,14 @@
+# eth-testnet-runner
+
+Generates config for a local testnet and provides commands to run 1 peer with a small number of validators.
+
 # Notes on creating testnet
 
 Currently only supports `lighthouse` and `geth`.
+
+## Dependencies
+
+Expects `geth`, `ligthhouse` and `eth2-val-tools` in `bin` dir.
 
 ## Steps
 
@@ -15,9 +23,6 @@ Currently only supports `lighthouse` and `geth`.
 - `just run-cl`
 - `just run-validator`
 
-## Dependencies
-
-Expects `geth`, `ligthhouse` and `eth2-val-tools` in `bin` dir.
 
 ## Sources
 
