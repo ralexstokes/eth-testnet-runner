@@ -7,8 +7,13 @@ EL_DATA_DIR := "el-data"
 export VALIDATORS_MNEMONIC_0 := `cat config-data/custom_config_data/mnemonics.yaml| yq -r '.[0].mnemonic'`
 CHAINID := `cat config-data/custom_config_data/genesis.json | jq .config.chainId`
 
+copy-config-template:
+  git clone https://github.com/ethpandaops/ethereum-genesis-generator
+  cp -r ethereum-genesis-generator/config-example {{CONFIG}}
+  rm -rf ethereum-genesis-generator
+
 ensure-dirs:
-    mkdir -p {{CONFIG_DATA}}
+  mkdir -p {{CONFIG_DATA}}
 
 create-config: ensure-dirs
   cp -r vendor/ethereum-genesis-generator/config-example {{CONFIG}}
