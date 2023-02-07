@@ -6,8 +6,6 @@ Currently only supports `lighthouse` and `geth`.
 
 1. `just create-config`
 
-* TODO: fix genesis time, any other config
-
 2. `just generate-keys`
 
 3. init geth

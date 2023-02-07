@@ -3,6 +3,7 @@ CONFIG_DATA := "config-data"
 KEYS_DIR := "testnet-keys"
 CL_DATA_DIR := "cl-data"
 EL_DATA_DIR := "el-data"
+NOW := `date +%s`
 
 export VALIDATORS_MNEMONIC_0 := `cat config-data/custom_config_data/mnemonics.yaml| yq -r '.[0].mnemonic'`
 CHAINID := `cat config-data/custom_config_data/genesis.json | jq .config.chainId`
@@ -16,13 +17,13 @@ ensure-dirs:
   mkdir -p {{CONFIG_DATA}}
 
 create-config: ensure-dirs
-  cp -r vendor/ethereum-genesis-generator/config-example {{CONFIG}}
+  echo {{NOW}}
   docker run --rm -it -u $UID -v $PWD/{{CONFIG_DATA}}:/data -p 127.0.0.1:8000:8000 \
   -v $PWD/{{CONFIG}}:/config \
+  -e GENESIS_TIMESTAMP={{NOW}} \
   ethpandaops/ethereum-genesis-generator:latest all
 
 clean:
-  rm -rf {{CONFIG}}
   rm -rf {{CONFIG_DATA}}
   rm -rf {{KEYS_DIR}}
   rm -rf {{CL_DATA_DIR}}
@@ -42,6 +43,7 @@ run-lighthouse:
     --testnet-dir {{CONFIG_DATA}}/custom_config_data \
     bn \
     --http --http-address 0.0.0.0 --http-port 5052 \
+    --http-allow-sync-stalled \
     --jwt-secrets {{CONFIG_DATA}}/cl/jwtsecret \
     --execution-endpoint http://localhost:8551
 
