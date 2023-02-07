@@ -27,4 +27,5 @@ Expects `geth`, `ligthhouse` and `eth2-val-tools` in `bin` dir.
 ## Sources
 
 https://github.com/ethpandaops/ethereum-genesis-generator
+
 https://github.com/ethereum/consensus-deployment-ansible
