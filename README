@@ -14,6 +14,10 @@ Currently only supports `lighthouse` and `geth`.
 
 4. run lighthouse vc, bn, geth
 
+## Dependencies
+
+Expects `geth`, `ligthhouse` and `eth2-val-tools` in `bin` dir.
+
 ## Sources
 
 https://github.com/ethpandaops/ethereum-genesis-generator
