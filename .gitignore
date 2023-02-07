@@ -1,2 +1,5 @@
 bin
 config-data
+cl-data
+el-data
+testnet-keys

@@ -8,9 +8,12 @@ Currently only supports `lighthouse` and `geth`.
 
 2. `just generate-keys`
 
-3. init geth
+3. `just init-geth`
 
-4. run lighthouse vc, bn, geth
+4. run clients:
+- `just run-el`
+- `just run-cl`
+- `just run-validator`
 
 ## Dependencies
 

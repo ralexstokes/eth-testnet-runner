@@ -36,8 +36,9 @@ generate-keys:
   rm -rf {{KEYS_DIR}}/lodestar-secrets
   rm -rf {{KEYS_DIR}}/prysm
   rm -rf {{KEYS_DIR}}/teku-keys
+  rm -rf {{KEYS_DIR}}/teku-secrets
 
-run-lighthouse:
+run-cl:
     ./bin/lighthouse \
     --datadir {{CL_DATA_DIR}} \
     --testnet-dir {{CONFIG_DATA}}/custom_config_data \
@@ -45,7 +46,9 @@ run-lighthouse:
     --http --http-address 0.0.0.0 --http-port 5052 \
     --http-allow-sync-stalled \
     --jwt-secrets {{CONFIG_DATA}}/cl/jwtsecret \
-    --execution-endpoint http://localhost:8551
+    --execution-endpoint http://localhost:8551 \
+    --disable-discovery \
+    --disable-upnp
 
 run-validator:
     ./bin/lighthouse \
@@ -54,12 +57,13 @@ run-validator:
     --init-slashing-protection \
     --validators-dir {{KEYS_DIR}}/keys \
     --secrets-dir {{KEYS_DIR}}/secrets \
-    --http --http-port 5062
+    --http --http-port 5062 \
+    --suggested-fee-recipient 0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134
 
 init-geth:
     ./bin/geth --datadir {{EL_DATA_DIR}} init {{CONFIG_DATA}}/custom_config_data/genesis.json
 
-run-geth:
+run-el:
     ./bin/geth \
     --datadir {{EL_DATA_DIR}} \
     --networkid {{CHAINID}} \
@@ -71,4 +75,5 @@ run-geth:
     --authrpc.addr 0.0.0.0 \
     --authrpc.vhosts "*" \
     --authrpc.jwtsecret {{CONFIG_DATA}}/el/jwtsecret \
-    --syncmode full
+    --syncmode full \
+    --nodiscover
