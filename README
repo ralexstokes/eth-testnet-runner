@@ -1,0 +1,20 @@
+# Notes on creating testnet
+
+Currently only supports `lighthouse` and `geth`.
+
+## Steps
+
+1. `just create-config`
+
+* TODO: fix genesis time, any other config
+
+2. `just generate-keys`
+
+3. init geth
+
+4. run lighthouse vc, bn, geth
+
+## Sources
+
+https://github.com/ethpandaops/ethereum-genesis-generator
+https://github.com/ethereum/consensus-deployment-ansible
