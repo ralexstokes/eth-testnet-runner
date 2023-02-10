@@ -79,7 +79,6 @@ run-cl-with-test-builder:
   --enr-udp-port 9000 \
   --enr-tcp-port 9000 \
   --port 9000 \
-  --target-peers 1 \
   --disable-packet-filter \
   --disable-enr-auto-update \
   --http --http-address 0.0.0.0 --http-port 5052 \
@@ -88,7 +87,11 @@ run-cl-with-test-builder:
   --execution-endpoint http://localhost:8553 \
   --disable-upnp \
   --builder http://localhost:18550 \
-  --builder-fallback-epochs-since-finalization 9999
+  --builder-fallback-epochs-since-finalization 9999 \
+  --builder-fallback-skips 1000000 \
+  --builder-fallback-skips-per-epoch 1000 \
+  # --target-peers 1 \
+
 
 run-validator-with-remote-builder: (run-validator "--builder-proposals")
 
@@ -124,7 +127,8 @@ run-builder-el:
   --authrpc.vhosts "*" \
   --authrpc.jwtsecret {{CONFIG_DATA}}/el/jwtsecret \
   --syncmode full \
-  --bootnodes 'enode://840bd462c2dcbd393eecfdc547363dd2d24739bc5a16cacb590fde190fe00d3a6a976b76430cc161ea93abe5ed9e54324445d78e5e3bb0ebec73558e2c6cbe0d@127.0.0.1:30303'
+  --nodiscover \
+  # --bootnodes 'enode://840bd462c2dcbd393eecfdc547363dd2d24739bc5a16cacb590fde190fe00d3a6a976b76430cc161ea93abe5ed9e54324445d78e5e3bb0ebec73558e2c6cbe0d@127.0.0.1:30303' \
 
 init-geth-builder:
   ./bin/geth --datadir {{EL_DATA_DIR}}/builder init {{CONFIG_DATA}}/custom_config_data/genesis.json
@@ -139,12 +143,12 @@ run-builder-cl:
   --enr-udp-port 9001 \
   --enr-tcp-port 9001 \
   --port 9001 \
-  --target-peers 1 \
   --disable-packet-filter \
   --disable-enr-auto-update \
   --http --http-address 0.0.0.0 --http-port 5053 \
   --http-allow-sync-stalled \
   --jwt-secrets {{CONFIG_DATA}}/cl/jwtsecret \
-  --execution-endpoint http://localhost:8552 \
+  --execution-endpoint http://localhost:8551 \
   --disable-upnp \
   --boot-nodes "enr:-Ly4QL6ptJ2eiky4s7ONOL_xrxeTo9YPqd_x1dgBSxRw88M1UcV8V-qNI6FqhGqlRUSdYpM6KNxJPLKpExDqwiCgqRJFh2F0dG5ldHOI__________-EZXRoMpD8UCF9MAAAQP__________gmlkgnY0gmlwhH8AAAGJc2VjcDI1NmsxoQMrn0mvG9hnyObWytNAhgX8jqjG6mgjH-DIGG4PspEStIhzeW5jbmV0cw-DdGNwgiMog3VkcIIjKA"
+  # --target-peers 1 \
