@@ -1,12 +1,10 @@
 CONFIG := "testnet-config"
 CONFIG_DATA := "config-data"
-KEYS_DIR := "testnet-keys"
 CL_DATA_DIR := "cl-data"
 EL_DATA_DIR := "el-data"
 NOW := `date +%s`
 
-export VALIDATORS_MNEMONIC_0 := `cat config-data/custom_config_data/mnemonics.yaml| yq -r '.[0].mnemonic'`
-CHAINID := `cat config-data/custom_config_data/genesis.json | jq .config.chainId`
+dotenv-path := "testnet-config/values.env"
 
 copy-config-template:
   git clone https://github.com/ethpandaops/ethereum-genesis-generator
@@ -17,13 +15,12 @@ ensure-dirs:
   mkdir -p {{CONFIG_DATA}}
 
 generate-keys:
-  source {{CONFIG}}/values.env
   bash src/generate_keys.sh
-  rm -rf {{KEYS_DIR}}/nimbus-keys
-  rm -rf {{KEYS_DIR}}/lodestar-secrets
-  rm -rf {{KEYS_DIR}}/prysm
-  rm -rf {{KEYS_DIR}}/teku-keys
-  rm -rf {{KEYS_DIR}}/teku-secrets
+  rm -rf {{CONFIG_DATA}}/keys/nimbus-keys
+  rm -rf {{CONFIG_DATA}}/keys/lodestar-secrets
+  rm -rf {{CONFIG_DATA}}/keys/prysm
+  rm -rf {{CONFIG_DATA}}/keys/teku-keys
+  rm -rf {{CONFIG_DATA}}/keys/teku-secrets
 
 create-genesis: ensure-dirs
   @ docker pull ethpandaops/ethereum-genesis-generator
@@ -32,12 +29,11 @@ create-genesis: ensure-dirs
   -v $PWD/{{CONFIG}}:/config \
   -e GENESIS_TIMESTAMP={{NOW}} \
   ethpandaops/ethereum-genesis-generator:latest all
-  rm -rf {{CONFIG_DATA}}/custom_config_data/{tranches,boot_enr.txt,bootstrap_nodes.txt,deploy_block.txt,deposit_contract*,besu.json,chainspec.json,parsedBeaconState.json}
+  rm -rf {{CONFIG_DATA}}/custom_config_data/{tranches,boot_enr.txt,bootstrap_nodes.txt,deposit_contract*,besu.json,chainspec.json,parsedBeaconState.json}
   just generate-keys
 
 clean:
   rm -rf {{CONFIG_DATA}}
-  rm -rf {{KEYS_DIR}}
   rm -rf {{CL_DATA_DIR}}
   rm -rf {{EL_DATA_DIR}}
 
@@ -64,8 +60,8 @@ run-validator remote_builder_opt="":
   --testnet-dir {{CONFIG_DATA}}/custom_config_data \
   vc \
   --init-slashing-protection \
-  --validators-dir {{KEYS_DIR}}/keys \
-  --secrets-dir {{KEYS_DIR}}/secrets \
+  --validators-dir {{CONFIG_DATA}}/keys/keys \
+  --secrets-dir {{CONFIG_DATA}}/keys/secrets \
   --http --http-port 5062 \
   --suggested-fee-recipient "0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134" \
   {{remote_builder_opt}}
@@ -78,7 +74,6 @@ init-geth:
 run-el:
   ./bin/geth \
   --datadir {{EL_DATA_DIR}}/some-el \
-  --networkid {{CHAINID}} \
   --http \
   --syncmode=full \
   --authrpc.jwtsecret {{CONFIG_DATA}}/jwt/jwtsecret

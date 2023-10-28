@@ -2,8 +2,8 @@
 
 # modified from https://github.com/ethereum/consensus-deployment-ansible/blob/master/example-testnet/generate_keys.sh
 
-if [ -z "$VALIDATORS_MNEMONIC_0" ]; then
-  echo "missing mnemonic 0"
+if [ -z "$EL_AND_CL_MNEMONIC" ]; then
+  echo "missing mnemonic"
   exit 1
 fi
 
@@ -25,14 +25,14 @@ function prep_group {
     let validators_source_min=offset_i*validators_per_host
     let validators_source_max=validators_source_min+validators_per_host
 
-    echo "writing keystores to 'testnet-keys'"
+    echo "writing keystores to 'config-data/keys'"
     ./bin/eth2-val-tools keystores \
     --insecure \
-    --out-loc="testnet-keys" \
+    --out-loc="config-data/keys" \
     --source-max="$validators_source_max" \
     --source-min="$validators_source_min" \
     --source-mnemonic="$validators_source_mnemonic"
   done
 }
 
-prep_group 1 "$VALIDATORS_MNEMONIC_0" 0 1 "example-testnet" $NUMBER_OF_VALIDATORS
+prep_group 1 "$EL_AND_CL_MNEMONIC" 0 1 "example-testnet" $NUMBER_OF_VALIDATORS

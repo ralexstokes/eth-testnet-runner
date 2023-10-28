@@ -12,23 +12,24 @@ Expects `geth`, `ligthhouse` and `eth2-val-tools` in `bin` dir.
 
 ## Steps
 
-(optionally):
+### One time
 
-0. (to start from scratch):
-```bash
-just clean
-just copy-config-templates
-```
+`just copy-config-templates`
 
-1. `just create-genesis`
+### To create configuration
 
-3. `just init-geth`
+Edit values in `testnet-config/values.env`. Then,
 
-4. run clients:
+`just create-genesis`
+
+### To run clients
+
+`just init-geth`
+
+run clients:
 - `just run-el`
 - `just run-cl`
 - `just run-validator`
-
 
 ## Sources
 
