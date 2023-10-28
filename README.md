@@ -12,6 +12,14 @@ Expects `geth`, `ligthhouse` and `eth2-val-tools` in `bin` dir.
 
 ## Steps
 
+(optionally):
+
+0. (to start from scratch):
+```bash
+just clean
+just copy-config-templates
+```
+
 1. `just create-config`
 
 2. `just generate-keys`
