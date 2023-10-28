@@ -20,9 +20,7 @@ just clean
 just copy-config-templates
 ```
 
-1. `just create-config`
-
-2. `just generate-keys`
+1. `just create-genesis`
 
 3. `just init-geth`
 

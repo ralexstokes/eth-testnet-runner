@@ -7,6 +7,11 @@ if [ -z "$VALIDATORS_MNEMONIC_0" ]; then
   exit 1
 fi
 
+if [ -z "$NUMBER_OF_VALIDATORS" ]; then
+  echo "missing number of validators"
+  exit 1
+fi
+
 function prep_group {
   let group_base=$1
   validators_source_mnemonic="$2"
@@ -30,4 +35,4 @@ function prep_group {
   done
 }
 
-prep_group 1 "$VALIDATORS_MNEMONIC_0" 0 1 "example-testnet" 64
+prep_group 1 "$VALIDATORS_MNEMONIC_0" 0 1 "example-testnet" $NUMBER_OF_VALIDATORS

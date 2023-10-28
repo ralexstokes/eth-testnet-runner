@@ -16,29 +16,30 @@ copy-config-template:
 ensure-dirs:
   mkdir -p {{CONFIG_DATA}}
 
-create-config: ensure-dirs
-  @ docker pull ethpandaops/ethereum-genesis-generator
-  docker run --rm -it -u $UID \
-  -v $PWD/{{CONFIG_DATA}}:/data \
-  -v $PWD/{{CONFIG}}:/config \
-  -e GENESIS_TIMESTAMP={{NOW}} \
-  ethpandaops/ethereum-genesis-generator:latest all
-  just generate_keys
-
-clean:
-  rm -rf {{CONFIG_DATA}}
-  rm -rf {{KEYS_DIR}}
-  rm -rf {{CL_DATA_DIR}}
-  rm -rf {{EL_DATA_DIR}}
-
 generate-keys:
-  @ # curl -O https://raw.githubusercontent.com/ethereum/consensus-deployment-ansible/master/example-testnet/generate_keys.sh
+  source {{CONFIG}}/values.env
   bash src/generate_keys.sh
   rm -rf {{KEYS_DIR}}/nimbus-keys
   rm -rf {{KEYS_DIR}}/lodestar-secrets
   rm -rf {{KEYS_DIR}}/prysm
   rm -rf {{KEYS_DIR}}/teku-keys
   rm -rf {{KEYS_DIR}}/teku-secrets
+
+create-genesis: ensure-dirs
+  @ docker pull ethpandaops/ethereum-genesis-generator
+  docker run --rm -it -u $UID \
+  -v $PWD/{{CONFIG_DATA}}:/data \
+  -v $PWD/{{CONFIG}}:/config \
+  -e GENESIS_TIMESTAMP={{NOW}} \
+  ethpandaops/ethereum-genesis-generator:latest all
+  rm -rf {{CONFIG_DATA}}/custom_config_data/{tranches,boot_enr.txt,bootstrap_nodes.txt,deploy_block.txt,deposit_contract*,besu.json,chainspec.json,parsedBeaconState.json}
+  just generate-keys
+
+clean:
+  rm -rf {{CONFIG_DATA}}
+  rm -rf {{KEYS_DIR}}
+  rm -rf {{CL_DATA_DIR}}
+  rm -rf {{EL_DATA_DIR}}
 
 ###
 
