@@ -4,8 +4,6 @@ CL_DATA_DIR := "cl-data"
 EL_DATA_DIR := "el-data"
 NOW := `date +%s`
 
-dotenv-path := "testnet-config/values.env"
-
 copy-config-template:
   git clone https://github.com/ethpandaops/ethereum-genesis-generator
   cp -r ethereum-genesis-generator/config-example {{CONFIG}}
@@ -15,7 +13,7 @@ ensure-dirs:
   mkdir -p {{CONFIG_DATA}}
 
 generate-keys:
-  bash src/generate_keys.sh
+  bash ./src/generate_keys.sh {{CONFIG}}/values.env
   rm -rf {{CONFIG_DATA}}/keys/nimbus-keys
   rm -rf {{CONFIG_DATA}}/keys/lodestar-secrets
   rm -rf {{CONFIG_DATA}}/keys/prysm
