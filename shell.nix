@@ -1,22 +1,22 @@
 { pkgs ? import <nixpkgs> { } }:
 with pkgs;
 let
-  # eth2-val-tools = buildGoModule rec {
-  #   pname = "eth2-val-tools";
-  #   version = "d5a451b851cda7a67a455aab0da4c699ca8027f2";
-  #   src = fetchFromGitHub {
-  #     owner = "protolambda";
-  #     repo = "eth2-val-tools";
-  #     rev = "${version}";
-  #     sha256 = "x50VDdwCDVwt+1mg0bCtkM4finhdfS/vaPzR+ylWpkA=";
-  #   };
-  #   vendorSha256 = "Z8JzDPmNN+UWa3UB139bJ35MwjUkYxsY2XwXpid4AIM=";
-  # };
-  # unstable = import (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/9959fe259d84b969fefa3c541e9e5a4ed381387d) { };
+  eth2-val-tools = buildGoModule rec {
+    pname = "eth2-val-tools";
+    version = "3c6266a6cf44e7f61866e115106fa4382e30f3a4";
+    proxyVendor = true;
+    src = fetchFromGitHub {
+      owner = "protolambda";
+      repo = "eth2-val-tools";
+      rev = "${version}";
+      sha256 = "SZFl8f9858e1mKFNeYbeh9Zg/6NYviid6G8L868UfIw=";
+    };
+    vendorSha256 = "FTws0YtP1VyDerkHJLBxQDwhmtbHO0tx1M7CX7JIstY=";
+  };
 in
 mkShell {
   buildInputs = [
-    # eth2-val-tools
+    eth2-val-tools
     curl
     jq
     yq
